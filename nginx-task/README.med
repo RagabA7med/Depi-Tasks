@@ -1,0 +1,168 @@
+# 📄 Nginx Web Server Configuration
+
+## 📌 Project Overview
+This project demonstrates how to configure an **Nginx web server** with a custom setup.  
+The configuration includes:
+- Running the server on a custom port (`8085`).
+- Serving static files from `/var/www/html`.
+- Enabling caching for images under `/image/` directory.
+- Using custom access and error log files for better monitoring.
+
+This setup is useful for hosting a simple static website with optimized performance for images.
+
+---
+
+## ⚙️ Configuration Details
+
+The server block used in this project:
+
+```nginx
+server {
+    listen 8085; 
+    server_name ragab.com; 
+
+    root /var/www/html;
+    index index.html;
+
+    location /image/ {
+        try_files $uri $uri/ =404;
+
+        # Caching
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+    }
+
+    access_log /var/log/nginx/my_site_access.log;
+    error_log /var/log/nginx/my_site_error.log;
+}
+````
+
+### 🔑 Explanation:
+
+| Directive                      | Description                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------- |
+| `listen 8085;`                 | Runs Nginx on port **8085** instead of the default port `80`.               |
+| `server_name ragab.com;`       | Defines the server name (can be mapped in `/etc/hosts`).                    |
+| `root /var/www/html;`          | Root directory for the website files.                                       |
+| `index index.html;`            | Default index file to serve.                                                |
+| `location /image/ { ... }`     | Serves files in the `/image/` directory. If file not found → returns `404`. |
+| `expires 30d;`                 | Browser caching for 30 days.                                                |
+| `add_header Cache-Control ...` | Adds HTTP cache headers for images.                                         |
+| `access_log`                   | Path for access log file.                                                   |
+| `error_log`                    | Path for error log file.                                                    |
+
+---
+
+## 🚀 Setup Instructions
+
+Follow these steps to set up and run the server:
+
+### 1️⃣ Install Nginx
+
+```bash
+sudo apt update
+sudo apt install nginx -y
+```
+
+### 2️⃣ Create a Configuration File
+
+Create a new config file:
+
+```bash
+sudo nano /etc/nginx/sites-available/ragab.conf
+```
+
+Paste the server block from above.
+
+### 3️⃣ Enable the Configuration
+
+```bash
+sudo ln -s /etc/nginx/sites-available/ragab.conf /etc/nginx/sites-enabled/
+```
+
+### 4️⃣ Test Configuration Syntax
+
+```bash
+sudo nginx -t
+```
+
+### 5️⃣ Restart Nginx
+
+```bash
+sudo systemctl restart nginx
+```
+
+### 6️⃣ (Optional) Update Hosts File
+
+To resolve `ragab.com` locally:
+
+```bash
+sudo nano /etc/hosts
+```
+
+Add the line:
+
+```
+127.0.0.1 ragab.com
+```
+
+### 7️⃣ Verify in Browser
+
+* Open: `http://localhost:8085`
+* Or: `http://ragab.com:8085` (if `/etc/hosts` updated)
+
+---
+
+## 📂 Project Structure Example
+
+Example of files served by the server:
+
+```
+/var/www/html/
+│── index.html
+│── about.html
+└── image/
+    ├── logo.png
+    ├── banner.jpg
+    └── icons/
+```
+
+---
+
+## 🛠️ Modifications Made
+
+* Changed default **listening port** from `80` → `8085`.
+* Added **custom access and error logs** in `/var/log/nginx/`.
+* Configured **image caching (30 days)** for `/image/` directory.
+
+---
+
+## ✅ Verification
+
+You can check if everything works as expected:
+
+1. Open `http://localhost:8085` → should load `index.html`.
+2. Open `http://localhost:8085/image/logo.png` → should load an image with caching enabled.
+3. Check logs:
+
+   ```bash
+   tail -f /var/log/nginx/my_site_access.log
+   tail -f /var/log/nginx/my_site_error.log
+   ```
+
+---
+
+## 📖 Notes
+
+* Make sure port **8085** is open on your system firewall if you want to access it externally.
+* You can change the `root` directory path to serve files from a different location.
+* For production use, always secure your server with **HTTPS**.
+
+---
+
+```
+
+---
+
+تحب أضيفلك كمان **قسم Troubleshooting (حل مشاكل)** في الآخر عشان لو السيرفر مش شغال تعرف تعمل إيه؟
+```

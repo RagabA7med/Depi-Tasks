@@ -16,26 +16,8 @@ This setup is useful for hosting a simple static website with optimized performa
 
 The server block used in this project:
 
-```nginx
-server {
-    listen 8085; 
-    server_name ragab.com; 
+<img width="662" height="445" alt="image" src="https://github.com/user-attachments/assets/c9cb5324-ffed-44ba-841d-34e3d2523b6c" />
 
-    root /var/www/html;
-    index index.html;
-
-    location /image/ {
-        try_files $uri $uri/ =404;
-
-        # Caching
-        expires 30d;
-        add_header Cache-Control "public, max-age=2592000";
-    }
-
-    access_log /var/log/nginx/my_site_access.log;
-    error_log /var/log/nginx/my_site_error.log;
-}
-````
 
 ### 🔑 Explanation:
 
@@ -157,12 +139,3 @@ You can check if everything works as expected:
 * Make sure port **8085** is open on your system firewall if you want to access it externally.
 * You can change the `root` directory path to serve files from a different location.
 * For production use, always secure your server with **HTTPS**.
-
----
-
-```
-
----
-
-تحب أضيفلك كمان **قسم Troubleshooting (حل مشاكل)** في الآخر عشان لو السيرفر مش شغال تعرف تعمل إيه؟
-```

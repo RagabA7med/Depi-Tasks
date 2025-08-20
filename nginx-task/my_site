@@ -1,0 +1,20 @@
+server {
+    listen 8085; 
+    server_name ragab.com; 
+
+    root /var/www/html;
+    index index.html;
+
+    location /image/ {
+
+        try_files $uri $uri/ =404;
+
+        # Caching
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+    }
+
+    access_log /var/log/nginx/my_site_access.log;
+    error_log /var/log/nginx/my_site_error.log;
+}
+

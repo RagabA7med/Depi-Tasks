@@ -11,3 +11,27 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+    env_file:
+      - ${ENV_FILE:-.env}
+
+  db:
+    container_name: petclinic-db
+    restart: unless-stopped
+    env_file:
+      - ${ENV_FILE:-.env}
+    image: ${DB_IMAGE:-mysql:8.4}
+    ports:
+      - "${DB_PORT:-3306}:${DB_PORT:-3306}"
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "${DB_HEALTHCHECK}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  dbdata:
+  pgdata:
+

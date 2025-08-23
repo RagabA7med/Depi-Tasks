@@ -65,7 +65,8 @@ spring-petclinic-compose/
 
 ### 2️⃣ `.env.sql` (Production)
 
-![Uploading image.png…]()
+<img width="1149" height="301" alt="image" src="https://github.com/user-attachments/assets/8324a0cc-6b26-4bf3-9134-5015bdf27405" />
+
 
 
 ---
